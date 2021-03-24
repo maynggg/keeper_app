@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Connect to database
-mongoose.connect(process.env.DB_URI, { useNewUrlParser: true });
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.once('open', () => {
   console.log('open db connection');
