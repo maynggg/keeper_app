@@ -25,3 +25,21 @@ exports.deleteNote = async (req, res) => {
   const deletedNote = await Note.findByIdAndDelete(id);
   return res.json(deletedNote);
 };
+
+exports.editNote = async (req, res) => {
+  const { id } = req.params;
+  const editableFields = ['title', 'content'];
+  const noteToEdit = await Note.findById(id);
+  if (noteToEdit.user.toString() !== req.user._id.toString()) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  editableFields.forEach((field) => {
+    if (req.body[field]) {
+      noteToEdit[field] = req.body[field];
+    }
+  });
+
+  await noteToEdit.save();
+  return res.json(noteToEdit);
+};
