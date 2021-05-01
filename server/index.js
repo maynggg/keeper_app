@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const noteRoutes = require('./routes/note.js');
+const userRoutes = require('./routes/user.js');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -23,6 +24,7 @@ db.once('open', () => {
 
 // Routers
 app.use('/notes', noteRoutes);
+app.use('/users', userRoutes);
 
 app.listen(port, () => {
   console.log(`Running on port ${port}`);
