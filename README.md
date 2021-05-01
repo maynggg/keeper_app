@@ -2,7 +2,7 @@
 ## Description:
 This project is a clone of Google Keep, a note-taking web application.
 Front-end development: React, axios.
-Back-end development: Node.js, Express.js, Mongoose.
+Back-end development: Node.js, Express.js, Mongoose, JWT.
 
 ## Development guide:
 
