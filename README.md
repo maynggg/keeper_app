@@ -1,8 +1,8 @@
 # Keeper App
 ## Description:
 This project is a clone of Google Keep, a note-taking web application.
-Front-end development: React, React Router, axios, styled components, React toastify.
-Back-end development: Node.js, Express.js, Mongoose, JWT.
+- Front-end development: React, React Router, axios, styled components, React toastify.
+- Back-end development: Node.js, Express.js, Mongoose, JWT.
 
 ## Development guide:
 
