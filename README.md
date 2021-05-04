@@ -21,5 +21,4 @@ This project is a clone of Google Keep, a note-taking web application.
 
 ## Pending features:
 - Reminder
-- Note editing
 - Image adding

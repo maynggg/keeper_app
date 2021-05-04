@@ -5,7 +5,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Note from './Note';
 import CreateArea from './CreateArea';
-import { getAllNotes, createNote, deleteNote } from '../apiService';
+import { getAllNotes, createNote, deleteNote, editNote } from '../apiService';
 
 function HomePage({ onLogout }) {
   const [items, setItems] = useState([]);
@@ -39,6 +39,19 @@ function HomePage({ onLogout }) {
       toast.error(error.response.data.error);
     }
   }
+  
+  const  handleEditNote = async (id, editedItem) => {
+    try {
+      const editedNote = await editNote(id, editedItem);
+      console.log(editedNote);
+      setItems(items.map((item) => {
+        if (item._id === id) return editedNote;
+        return item;
+      }));
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  }
 
   return (
     <div>
@@ -53,6 +66,7 @@ function HomePage({ onLogout }) {
           title={item.title}
           content={item.content}
           onDelete={handleDeleteNote}
+          onEdit={handleEditNote}
         />
       ))}
       <Footer />

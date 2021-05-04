@@ -29,6 +29,15 @@ const deleteNote = async (id) => {
   return data;
 }
 
+const editNote = async (id, item) => {
+  const { data } = await axios.patch(`${BASE_URL}/notes/${id}`, item, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    }
+  });
+  return data;
+}
+
 const login = async (formData) => {
   const { email, password } = formData;
 
@@ -55,6 +64,7 @@ export {
   getAllNotes,
   createNote,
   deleteNote,
+  editNote,
   login,
   signup,
 }

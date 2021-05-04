@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
+import { editNote } from '../apiService';
 
 const NoteItem = styled.div`
   background: #fff;
@@ -37,13 +39,74 @@ const Button = styled.button`
   background-color: white;
 `;
 
+const Input = styled.input`
+  padding: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+
+  :focus {
+    outline: none;
+  }
+`;
+
 function Note(props) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    title: props.title,
+    content: props.content,
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const editNote = () => {
+    if (formData.title === props.title && formData.content === props.content) {
+      setIsEditing(false);
+      return;
+    }
+    props.onEdit(props.id, formData);
+  }
+
+  useEffect(() => {
+    setIsEditing(false);
+  }, [props.title, props.content]);
+
   return (
     <NoteItem>
-      <Title>{props.title}</Title>
-      <Content>{props.content}</Content>
-      <Button onClick={() => {props.onDelete(props.id)}}>
+      {isEditing ? (
+        <>
+          <Input
+            onChange={handleInputChange}
+            value={formData.title}
+            name="title"
+          />
+          <Input
+            onChange={handleInputChange}
+            value={formData.content}
+            name="content"
+          />
+        </>
+      ) : (
+        <>
+          <Title>{props.title}</Title>
+          <Content>{props.content}</Content>
+        </>
+      )}
+      {isEditing && (
+        <Button onClick={editNote}>Save</Button>
+      )}
+      <Button onClick={() => props.onDelete(props.id)}>
         <DeleteIcon />
+      </Button>
+      <Button onClick={() => setIsEditing(true)}>
+        <EditIcon />
       </Button>
     </NoteItem>
   );
