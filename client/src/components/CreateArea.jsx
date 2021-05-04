@@ -1,7 +1,52 @@
 import React, { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import {  Fab, Zoom } from '@material-ui/core';
+import { Zoom } from '@material-ui/core';
+import styled from 'styled-components';
 
+const Form = styled.form`
+  position: relative;
+  width: 480px;
+  margin: 30px auto 20px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 7px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+`;
+
+const Input = styled.input`
+  width: 100%;
+  border: none;
+  padding: 4px;
+  outline: none;
+  font-size: 1.2em;
+  font-family: inherit;
+  resize: none;
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  border: none;
+  padding: 4px;
+  outline: none;
+  font-size: 1.2em;
+  font-family: inherit;
+  resize: none;
+`;
+
+const Button = styled.button`
+  position: absolute;
+  right: 18px;
+  bottom: -18px;
+  background: #f5ba13;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  outline: none;
+`;
 
 const DEFAULT_NEW_NOTE = {
   title: '',
@@ -34,8 +79,8 @@ function CreateArea({ onItemCreated }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="create-note">
-        {zoomIn && <input
+      <Form onSubmit={handleSubmit}>
+        {zoomIn && <Input
           onChange={handleChange}
           name="title"
           placeholder="Title"
@@ -43,7 +88,7 @@ function CreateArea({ onItemCreated }) {
           value={title}
         />}
           
-          <textarea
+          <TextArea
             onClick={handleClick}
             onChange={handleChange}
             name="content"
@@ -53,11 +98,11 @@ function CreateArea({ onItemCreated }) {
           />
           
           <Zoom in={zoomIn}>
-            <Fab type="submit">
+            <Button type="submit">
               < AddIcon/>
-            </Fab>
+            </Button>
           </Zoom>
-      </form>
+      </Form>
     </div>
   );
 }

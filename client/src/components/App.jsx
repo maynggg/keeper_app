@@ -1,50 +1,62 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import Header from './Header';
-import Footer from './Footer';
-import Note from './Note';
-import CreateArea from './CreateArea';
-import { getAllNotes, createNote, deleteNote } from '../apiService';
+import HomePage from './HomePage';
+import LoginPage from './LoginPage';
+import SignupPage from './SignupPage';
 
 function App() {
-  const [items, setItems] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem("accessToken") !== null);
 
-  useEffect(() => {
-    async function fetchData() {
-      const notes = await getAllNotes();
-      setItems(notes);
-    }
-    fetchData();
-  }, []);
-
-  const handleNewItem = async (item) => {
-    const newNote = await createNote(item);
-    setItems([...items, newNote]);
+  const handleLogin = (accessToken) => {
+    localStorage.setItem("accessToken", accessToken);
+    setIsAuthenticated(true);
   }
 
-  const handleDeleteNote = async (id) => {
-    await deleteNote(id);
-    setItems(items.filter((item) => item._id !== id));
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setIsAuthenticated(false);
+  }
+
+  const handleSignup = (accessToken) => {
+    localStorage.setItem("accessToken", accessToken);
+    setIsAuthenticated(true);
   }
 
   return (
-    <div>
-      <Header />
-      <CreateArea
-        onItemCreated={handleNewItem}
-      />
-      {items.map((item) => (
-        <Note 
-          key={item._id}
-          id={item._id}
-          title={item.title}
-          content={item.content}
-          onDelete={handleDeleteNote}
-        />
-      ))}
-      <Footer />
-    </div>
-  );
+    <Router>
+      { isAuthenticated ? (
+        <Switch>
+          <Route path="/home">
+            <HomePage onLogout={handleLogout}/>
+          </Route>
+          <Redirect to="/home"/>
+        </Switch>
+      ) : (
+        <Switch>
+          <Route path="/login">
+            <LoginPage 
+              onLoginSuccess={handleLogin}
+            />
+          </Route>
+          <Route path="/signup">
+            <SignupPage 
+              onSignupSuccess={handleSignup}
+            />
+          </Route>
+          <Redirect to="/login"/>
+        </Switch>
+      )}
+      <ToastContainer autoClose={3000} />
+    </Router>
+  )
 }
 
 export default App;

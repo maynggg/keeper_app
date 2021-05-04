@@ -47,19 +47,23 @@ exports.logIn = async (req, res) => {
     password,
   } = req.body;
 
-  // Check if this user exists
-  const user = await User.findOne({ email });
-  if (user === null) {
-    return res.status(401).json({ error: 'Wrong email or password.' });
-  }
+  try {
+    // Check if this user exists
+    const user = await User.findOne({ email });
+    if (user === null) {
+      return res.status(401).json({ error: 'Wrong email or password.' });
+    }
 
-  const passwordHash = pw.createPasswordHash(password, user.passwordSalt);
+    const passwordHash = pw.createPasswordHash(password, user.passwordSalt);
 
-  if (passwordHash !== user.passwordHash) {
-    return res.status(401).json({ error: 'Wrong email or password.' });
+    if (passwordHash !== user.passwordHash) {
+      return res.status(401).json({ error: 'Wrong email or password.' });
+    }
+    return res.json({
+      accessToken: createAuthToken(user),
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
-  return res.json({
-    accessToken: createAuthToken(user),
-    user,
-  });
 };
