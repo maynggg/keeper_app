@@ -1,7 +1,7 @@
 # Keeper App
 ## Description:
 This project is a clone of Google Keep, a note-taking web application.
-Front-end development: React, axios.
+Front-end development: React, React Router, axios, styled components, React toastify.
 Back-end development: Node.js, Express.js, Mongoose, JWT.
 
 ## Development guide:
@@ -20,7 +20,6 @@ Back-end development: Node.js, Express.js, Mongoose, JWT.
 4. Start the React app by using the command `npm run start`. The app now starts at http://localhost:3000/
 
 ## Pending features:
-- User Authentication
 - Reminder
 - Note editing
 - Image adding
